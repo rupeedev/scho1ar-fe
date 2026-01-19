@@ -1,0 +1,6 @@
+# Nixpacks configuration for Railway deployment
+# Disable cache mounts to avoid "Device or resource busy" errors
+
+[phases.build]
+cmds = ["npm run build"]
+cacheDirectories = []
