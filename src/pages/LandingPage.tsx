@@ -67,12 +67,12 @@ const LandingPage = () => {
               <div className="w-8 h-8 bg-[#1a65d5] rounded-lg flex items-center justify-center">
                 <Cloud className="h-5 w-5 text-white" />
               </div>
-              <span className="text-xl font-semibold tracking-tight text-gray-900">Scho1ar</span>
+              <span className="text-xl font-semibold tracking-tight text-gray-900">Scho1ar Solutions</span>
             </div>
 
             <nav className="hidden md:flex items-center gap-8">
-              <a href="#features" className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors">Features</a>
-              <a href="#how-it-works" className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors">How it Works</a>
+              <a href="https://aiinfra.cloud" className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors">A(I)infra</a>
+              <a href="https://ikanban.cloud" className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors">iKanban</a>
               <Link to="/pricing" className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors">Pricing</Link>
               <a href="#contact" className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors">Contact</a>
             </nav>
@@ -335,7 +335,7 @@ const LandingPage = () => {
                 <div className="w-8 h-8 bg-[#1a65d5] rounded-lg flex items-center justify-center">
                   <Cloud className="h-5 w-5 text-white" />
                 </div>
-                <span className="text-xl font-semibold">Scho1ar</span>
+                <span className="text-xl font-semibold">Scho1ar Solutions</span>
               </div>
               <p className="text-gray-400 text-sm leading-relaxed">
                 The smart way to optimize your cloud costs and maximize your infrastructure ROI.
@@ -374,7 +374,7 @@ const LandingPage = () => {
           </div>
 
           <div className="border-t border-gray-800 pt-8 text-center text-sm text-gray-500">
-            <p>&copy; {new Date().getFullYear()} Scho1ar Inc. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Scho1ar Solutions Inc. All rights reserved.</p>
           </div>
         </div>
       </footer>
