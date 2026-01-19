@@ -60,3 +60,23 @@ Desktop.ini
 *.map
 .eslintcache
 .stylelintcache
+
+# AI tool configs
+.cursor/
+.roo/
+.roomodes
+.windsurfrules
+.taskmasterconfig
+
+# Code dump files
+all-code.txt
+python-all-code.txt
+concat-code.*
+
+# Test artifacts
+test-*.js
+test-*.html
+minimal-test-policy.json
+
+# One-time scripts
+download-aws-icons.cjs

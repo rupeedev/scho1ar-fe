@@ -2,6 +2,26 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## MANDATORY: Read Context Files First
+
+**Before starting ANY task, you MUST read these files in the `.claude/` directory:**
+
+| File | Purpose | Priority |
+|------|---------|----------|
+| `.claude/PROJECT.md` | Project info, paths, quick commands | **Required** |
+| `.claude/FILE-MAP.md` | Exact file locations - USE THIS TO FIND FILES! | **Required** |
+| `.claude/PATTERNS.md` | Code patterns and conventions | **Required** |
+| `.claude/WORKFLOW.md` | Development workflow phases | **Required** |
+| `.claude/TECHSTACK.md` | Package versions and dependencies | **Required** |
+| `.claude/CODING-GUIDELINES.md` | Coding standards and rules | **Required** |
+| `.claude/lessons-learned.md` | Critical incidents to avoid | **Required** |
+
+**DO NOT SKIP THIS STEP!** These files eliminate unnecessary exploration and prevent known issues.
+
+**Documentation:** `/Users/rupeshpanwar/Documents/docs/docs-scho1ar`
+
+---
+
 ## Overview
 
 CostPie is a cloud cost management application that helps organizations track, analyze, and optimize their cloud infrastructure spending. The project consists of a React/TypeScript frontend and a NestJS/TypeScript backend, using PostgreSQL (via Supabase) for data persistence.
