@@ -1,0 +1,411 @@
+import React, { useCallback, useEffect, useState } from 'react';
+import ReactFlow, {
+  Node,
+  Edge,
+  addEdge,
+  Connection,
+  useNodesState,
+  useEdgesState,
+  Controls,
+  MiniMap,
+  Background,
+  Panel,
+  useReactFlow,
+  ReactFlowProvider,
+} from 'reactflow';
+import 'reactflow/dist/style.css';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { 
+  Download, 
+  ZoomIn, 
+  ZoomOut, 
+  RotateCcw, 
+  Filter,
+  DollarSign,
+  Eye,
+  EyeOff
+} from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { cloudAccountsApi, NetworkTopologyData, NetworkTopologyNode } from '@/lib/api/cloud-accounts';
+import { ResourceNode } from './ResourceNode';
+import { VpcNode } from './VpcNode';
+import { SubnetNode } from './SubnetNode';
+
+const nodeTypes = {
+  vpc: VpcNode,
+  subnet: SubnetNode,
+  resource: ResourceNode,
+};
+
+interface NetworkTopologyDiagramProps {
+  accountId: string;
+}
+
+const NetworkTopologyDiagramContent: React.FC<NetworkTopologyDiagramProps> = ({ accountId }) => {
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [showCostOverlay, setShowCostOverlay] = useState(true);
+  const [resourceTypeFilter, setResourceTypeFilter] = useState<string>('all');
+  const [selectedNode, setSelectedNode] = useState<NetworkTopologyNode | null>(null);
+  const { fitView, getZoom, zoomIn, zoomOut } = useReactFlow();
+
+  // Fetch network topology data
+  const { data: topologyData, isLoading, error } = useQuery<NetworkTopologyData>({
+    queryKey: ['network-topology', accountId],
+    queryFn: () => cloudAccountsApi.getNetworkTopology(accountId),
+    enabled: !!accountId,
+  });
+
+  // Fetch resource relationships data
+  const { data: relationshipsData } = useQuery({
+    queryKey: ['resource-relationships', accountId],
+    queryFn: () => cloudAccountsApi.getResourceRelationships(accountId),
+    enabled: !!accountId,
+  });
+
+  // Process and filter nodes based on resource type filter
+  const processNodes = useCallback((rawNodes: NetworkTopologyNode[]) => {
+    if (!rawNodes) return [];
+
+    let filteredNodes = rawNodes;
+
+    // Apply resource type filter
+    if (resourceTypeFilter !== 'all') {
+      filteredNodes = rawNodes.filter(node => {
+        if (node.type === 'resource') {
+          return node.data.resourceType === resourceTypeFilter;
+        }
+        // Always include VPC and subnet nodes if they have filtered resources
+        return true;
+      });
+    }
+
+    // Convert to ReactFlow nodes with cost overlay
+    return filteredNodes.map(node => ({
+      ...node,
+      data: {
+        ...node.data,
+        showCost: showCostOverlay,
+        onClick: () => setSelectedNode(node),
+      },
+    }));
+  }, [resourceTypeFilter, showCostOverlay]);
+
+  // Process edges from relationships data
+  const processEdges = useCallback(() => {
+    if (!relationshipsData?.relationships) return [];
+
+    return relationshipsData.relationships.map((rel, index) => ({
+      id: `edge-${index}`,
+      source: rel.source,
+      target: rel.target,
+      type: 'smoothstep',
+      label: rel.label,
+      animated: rel.type === 'routes_to',
+      style: {
+        stroke: rel.type === 'uses' ? '#22c55e' : '#3b82f6',
+        strokeWidth: 2,
+      },
+      labelStyle: {
+        fontSize: 10,
+        fontWeight: 'bold',
+      },
+    }));
+  }, [relationshipsData]);
+
+  // Update nodes and edges when data changes
+  useEffect(() => {
+    if (topologyData?.nodes) {
+      const processedNodes = processNodes(topologyData.nodes);
+      setNodes(processedNodes);
+    }
+  }, [topologyData, processNodes, setNodes]);
+
+  useEffect(() => {
+    const processedEdges = processEdges();
+    setEdges(processedEdges);
+  }, [relationshipsData, processEdges, setEdges]);
+
+  const onConnect = useCallback(
+    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
+    [setEdges]
+  );
+
+  const handleExportImage = () => {
+    // Implementation for exporting diagram as image
+    const element = document.querySelector('.react-flow__viewport');
+    if (element) {
+      // Use html2canvas or similar library to export
+      console.log('Export functionality would be implemented here');
+    }
+  };
+
+  const handleReset = () => {
+    fitView();
+    setResourceTypeFilter('all');
+    setShowCostOverlay(true);
+    setSelectedNode(null);
+  };
+
+  // Get unique resource types for filter
+  const resourceTypes = React.useMemo(() => {
+    if (!topologyData?.nodes) return [];
+    const types = new Set<string>();
+    topologyData.nodes
+      .filter(node => node.type === 'resource' && node.data.resourceType)
+      .forEach(node => types.add(node.data.resourceType!));
+    return Array.from(types).sort();
+  }, [topologyData]);
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-8 w-48" />
+        <Skeleton className="h-96 w-full" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <Alert>
+        <AlertDescription>
+          Failed to load network topology: {error.message}
+        </AlertDescription>
+      </Alert>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* Stats Cards */}
+      {topologyData?.stats && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center space-x-2">
+                <DollarSign className="h-4 w-4 text-emerald-600" />
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Total Cost</p>
+                  <p className="text-2xl font-bold">${topologyData.stats.totalCost.toFixed(2)}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center space-x-2">
+                <div className="h-4 w-4 bg-blue-500 rounded" />
+                <div>
+                  <p className="text-sm font-medium text-gray-600">VPCs</p>
+                  <p className="text-2xl font-bold">{topologyData.stats.totalVpcs}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center space-x-2">
+                <div className="h-4 w-4 bg-gray-500 rounded" />
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Resources</p>
+                  <p className="text-2xl font-bold">{topologyData.stats.totalResources}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Main Topology Diagram */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Network Topology</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-96 w-full border rounded-lg">
+            <ReactFlow
+              nodes={nodes}
+              edges={edges}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+              onConnect={onConnect}
+              nodeTypes={nodeTypes}
+              fitView
+              attributionPosition="bottom-left"
+            >
+              <Controls />
+              <MiniMap />
+              <Background variant="dots" gap={12} size={1} />
+              
+              {/* Control Panel */}
+              <Panel position="top-right" className="space-y-2">
+                <div className="bg-white p-3 rounded-lg shadow-lg space-y-3">
+                  {/* Cost Overlay Toggle */}
+                  <div className="flex items-center space-x-2">
+                    <Switch 
+                      id="cost-overlay" 
+                      checked={showCostOverlay}
+                      onCheckedChange={setShowCostOverlay}
+                    />
+                    <Label htmlFor="cost-overlay" className="text-sm">
+                      {showCostOverlay ? (
+                        <>
+                          <Eye className="h-3 w-3 inline mr-1" />
+                          Show Costs
+                        </>
+                      ) : (
+                        <>
+                          <EyeOff className="h-3 w-3 inline mr-1" />
+                          Hide Costs
+                        </>
+                      )}
+                    </Label>
+                  </div>
+
+                  {/* Resource Type Filter */}
+                  <div className="space-y-1">
+                    <Label className="text-sm flex items-center">
+                      <Filter className="h-3 w-3 mr-1" />
+                      Filter by Type
+                    </Label>
+                    <Select value={resourceTypeFilter} onValueChange={setResourceTypeFilter}>
+                      <SelectTrigger className="w-32">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Types</SelectItem>
+                        {resourceTypes.map(type => (
+                          <SelectItem key={type} value={type}>
+                            {type.toUpperCase()}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex space-x-1">
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      onClick={() => zoomIn()}
+                      className="p-1"
+                    >
+                      <ZoomIn className="h-3 w-3" />
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      onClick={() => zoomOut()}
+                      className="p-1"
+                    >
+                      <ZoomOut className="h-3 w-3" />
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      onClick={handleReset}
+                      className="p-1"
+                    >
+                      <RotateCcw className="h-3 w-3" />
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      onClick={handleExportImage}
+                      className="p-1"
+                    >
+                      <Download className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
+              </Panel>
+            </ReactFlow>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Selected Node Details */}
+      {selectedNode && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Resource Details</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div>
+                <Badge variant="outline">{selectedNode.type.toUpperCase()}</Badge>
+                <h3 className="text-lg font-semibold mt-1">{selectedNode.data.label}</h3>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                {selectedNode.data.resourceType && (
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Resource Type</p>
+                    <p className="text-sm">{selectedNode.data.resourceType}</p>
+                  </div>
+                )}
+                
+                {selectedNode.data.region && (
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Region</p>
+                    <p className="text-sm">{selectedNode.data.region}</p>
+                  </div>
+                )}
+                
+                {selectedNode.data.status && (
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Status</p>
+                    <Badge variant={selectedNode.data.status === 'running' ? 'default' : 'secondary'}>
+                      {selectedNode.data.status}
+                    </Badge>
+                  </div>
+                )}
+                
+                {selectedNode.data.cost !== undefined && (
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Monthly Cost</p>
+                    <p className="text-sm font-bold text-emerald-600">
+                      ${selectedNode.data.cost.toFixed(2)}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {selectedNode.data.tags && Object.keys(selectedNode.data.tags).length > 0 && (
+                <div>
+                  <p className="text-sm font-medium text-gray-600 mb-2">Tags</p>
+                  <div className="flex flex-wrap gap-1">
+                    {Object.entries(selectedNode.data.tags as Record<string, string>).map(([key, value]) => (
+                      <Badge key={key} variant="outline" className="text-xs">
+                        {key}: {value}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+};
+
+const NetworkTopologyDiagram: React.FC<NetworkTopologyDiagramProps> = (props) => {
+  return (
+    <ReactFlowProvider>
+      <NetworkTopologyDiagramContent {...props} />
+    </ReactFlowProvider>
+  );
+};
+
+export default NetworkTopologyDiagram;

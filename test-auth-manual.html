@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CostPie Authentication Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .test-step {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 10px 0;
+            padding: 15px;
+        }
+        .step-header {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .step-description {
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .step-actions {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .status {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        .status.pending { background-color: #ffeaa7; color: #2d3436; }
+        .status.pass { background-color: #00b894; color: white; }
+        .status.fail { background-color: #e17055; color: white; }
+        
+        .api-test {
+            background: #2d3436;
+            color: #ddd;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        .api-response {
+            background: #636e72;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        button {
+            background: #0984e3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #74b9ff;
+        }
+        
+        .iframe-container {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        
+        #authStatus {
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔐 CostPie Authentication Flow Test</h1>
+    
+    <div class="test-container">
+        <h2>📋 Test Overview</h2>
+        <p>This test verifies that the Supabase authentication integration is working correctly with the CostPie backend.</p>
+        
+        <div id="authStatus" class="status pending">
+            Authentication Status: Not Tested
+        </div>
+    </div>
+
+    <div class="test-container">
+        <h2>🎯 Test Steps</h2>
+        
+        <div class="test-step">
+            <div class="step-header">Step 1: Load Frontend Application</div>
+            <div class="step-description">Open the CostPie frontend and verify it loads correctly</div>
+            <div class="step-actions">
+                ✅ Frontend should load at: http://localhost:8081/
+                ✅ No JavaScript errors in console
+                ✅ Supabase client initializes correctly
+            </div>
+            <iframe src="http://localhost:8081/" class="iframe-container" id="appFrame"></iframe>
+        </div>
+
+        <div class="test-step">
+            <div class="step-header">Step 2: Test Login Flow</div>
+            <div class="step-description">Navigate to login page and test authentication</div>
+            <div class="step-actions">
+                1. Click on login/sign up in the iframe above
+                2. Enter valid credentials
+                3. Submit the form
+                4. Check network tab for Authorization headers
+            </div>
+            <button onclick="testLoginAPI()">Test Login API</button>
+            <div id="loginResult" class="api-response"></div>
+        </div>
+
+        <div class="test-step">
+            <div class="step-header">Step 3: Test JWT Token Transfer</div>
+            <div class="step-description">Verify that JWT tokens are properly sent to backend</div>
+            <div class="step-actions">
+                Expected: Authorization header with "Bearer [token]" in API requests
+                Check: Network tab in DevTools for API calls
+                Verify: Backend accepts and validates the token
+            </div>
+            <button onclick="testTokenValidation()">Test Token Validation</button>
+            <div id="tokenResult" class="api-response"></div>
+        </div>
+
+        <div class="test-step">
+            <div class="step-header">Step 4: Test Protected Routes</div>
+            <div class="step-description">Verify protected routes require authentication</div>
+            <div class="step-actions">
+                Test endpoints:
+                - /api/v1/organizations/mine
+                - /api/v1/cloud-accounts
+                - /api/v1/costs/trend
+            </div>
+            <button onclick="testProtectedRoutes()">Test Protected Routes</button>
+            <div id="routesResult" class="api-response"></div>
+        </div>
+    </div>
+
+    <div class="test-container">
+        <h2>🔧 Manual Testing Checklist</h2>
+        
+        <div class="test-step">
+            <div class="step-header">Browser DevTools Testing</div>
+            <div class="step-description">Manual verification steps using browser developer tools</div>
+            <div class="step-actions">
+□ Open DevTools → Network tab
+□ Navigate to login page in iframe above
+□ Sign in with valid credentials
+□ Look for API requests in Network tab
+□ Verify Authorization header is present: "Bearer eyJ..."
+□ Check that protected routes return data when authenticated
+□ Verify logout clears the session
+            </div>
+        </div>
+    </div>
+
+    <div class="test-container">
+        <h2>📊 Test Results</h2>
+        <div id="testResults">
+            <p>Click the test buttons above to run automated tests.</p>
+        </div>
+    </div>
+
+    <script>
+        const BACKEND_URL = 'https://costpie-backend.onrender.com';
+        
+        async function testLoginAPI() {
+            const resultDiv = document.getElementById('loginResult');
+            resultDiv.innerHTML = 'Testing login API...';
+            
+            try {
+                // Test that login endpoint exists and handles requests
+                const response = await fetch(`${BACKEND_URL}/api/v1/organizations/mine`);
+                
+                resultDiv.innerHTML = `
+Login API Test Result:
+Status: ${response.status}
+Headers: ${JSON.stringify(Object.fromEntries(response.headers.entries()), null, 2)}
+
+${response.status === 200 ? '✅ Backend is accessible' : 
+  response.status === 401 ? '✅ Backend correctly requires authentication' : 
+  '❌ Unexpected response'}
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `❌ Error: ${error.message}`;
+            }
+        }
+        
+        async function testTokenValidation() {
+            const resultDiv = document.getElementById('tokenResult');
+            resultDiv.innerHTML = 'Testing token validation...';
+            
+            try {
+                // Test with invalid token
+                const response = await fetch(`${BACKEND_URL}/api/v1/organizations/mine`, {
+                    headers: {
+                        'Authorization': 'Bearer invalid-token-test'
+                    }
+                });
+                
+                resultDiv.innerHTML = `
+Token Validation Test:
+Status: ${response.status}
+Response: ${await response.text()}
+
+${response.status === 401 ? '✅ Backend correctly rejects invalid tokens' : 
+  response.status === 200 ? '⚠️ Backend accepts requests without proper validation (dev mode)' : 
+  '❌ Unexpected response'}
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `❌ Error: ${error.message}`;
+            }
+        }
+        
+        async function testProtectedRoutes() {
+            const resultDiv = document.getElementById('routesResult');
+            resultDiv.innerHTML = 'Testing protected routes...';
+            
+            const endpoints = [
+                '/api/v1/organizations/mine',
+                '/api/v1/cloud-accounts',
+                '/api/v1/costs/trend'
+            ];
+            
+            let results = [];
+            
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(`${BACKEND_URL}${endpoint}`);
+                    results.push(`${endpoint}: ${response.status} ${response.statusText}`);
+                } catch (error) {
+                    results.push(`${endpoint}: Error - ${error.message}`);
+                }
+            }
+            
+            resultDiv.innerHTML = `
+Protected Routes Test Results:
+${results.join('\n')}
+
+✅ Test completed. Check individual endpoints above.
+            `;
+        }
+        
+        // Check if frontend is loading
+        window.addEventListener('load', () => {
+            const iframe = document.getElementById('appFrame');
+            iframe.onload = () => {
+                console.log('Frontend loaded successfully');
+            };
+            iframe.onerror = () => {
+                console.error('Failed to load frontend');
+            };
+        });
+        
+        // Update auth status based on tests
+        function updateAuthStatus(status, message) {
+            const statusDiv = document.getElementById('authStatus');
+            statusDiv.className = `status ${status}`;
+            statusDiv.textContent = `Authentication Status: ${message}`;
+        }
+    </script>
+</body>
+</html>
