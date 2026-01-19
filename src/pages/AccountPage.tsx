@@ -8,7 +8,7 @@ import { PasswordSection } from "@/components/account/PasswordSection";
 import { AddressSection } from "@/components/account/AddressSection";
 import { PaymentSection } from "@/components/account/PaymentSection";
 import { ActionButtons } from "@/components/account/ActionButtons";
-import { useSupabaseAuth } from '@/hooks/use-supabase-auth';
+import { useClerkAuth } from '@/hooks/use-clerk-auth';
 import { useToast } from '@/components/ui/use-toast';
 import { useOrganizations } from '@/hooks/queries';
 
@@ -26,7 +26,7 @@ type PaymentMethod = {
 };
 
 const AccountPage = () => {
-  const { user: authUser } = useSupabaseAuth();
+  const { user: authUser } = useClerkAuth();
   const { toast } = useToast();
   
   // Use React Query to get organizations
@@ -137,10 +137,10 @@ const AccountPage = () => {
   
   // Create user object in the format expected by ProfileSection
   const userObj = authUser ? {
-    name: authUser.user_metadata?.display_name || authUser.email?.split('@')[0] || 'User',
+    name: authUser.fullName || authUser.firstName || authUser.email?.split('@')[0] || 'User',
     email: authUser.email || '',
-    phone: authUser.user_metadata?.phone || '',
-    avatarUrl: authUser.user_metadata?.avatar_url || '/placeholder.svg'
+    phone: '',
+    avatarUrl: authUser.imageUrl || '/placeholder.svg'
   } : {
     name: "User",
     email: '',

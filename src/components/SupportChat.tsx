@@ -3,7 +3,7 @@ import { X, Send, Minimize2, MessageCircle, User, Bot, Paperclip, Image, FileTex
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useSupabaseAuth } from '@/hooks/use-supabase-auth';
+import { useClerkAuth } from '@/hooks/use-clerk-auth';
 import { toast } from '@/components/ui/use-toast';
 
 interface Attachment {
@@ -34,7 +34,7 @@ const SupportChat = ({ isOpen, onClose, onOpen }: SupportChatProps) => {
   const [isUploading, setIsUploading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { user } = useSupabaseAuth();
+  const { user } = useClerkAuth();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

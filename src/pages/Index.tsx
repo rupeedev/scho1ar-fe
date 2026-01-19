@@ -20,7 +20,7 @@ import { AvocadoIcon, CO2Icon, EcoIcon } from '@/components/dashboard/CardIcons'
 import { Card, CardContent } from '@/components/ui/card';
 import { subDays, differenceInDays } from 'date-fns';
 import { useToast } from '@/components/ui/use-toast';
-import { useSupabaseAuth } from '@/hooks/use-supabase-auth';
+import { useClerkAuth } from '@/hooks/use-clerk-auth';
 // Import React Query hooks
 import { 
   useOrganizations, 
@@ -33,7 +33,7 @@ import {
 } from '@/hooks/queries';
 
 const Dashboard = () => {
-  const { user, loading } = useSupabaseAuth();
+  const { user, loading } = useClerkAuth();
   const [viewMode, setViewMode] = useState<'chart' | 'table'>('chart');
   const [startDate, setStartDate] = useState<Date>(subDays(new Date(), 30));
   const [endDate, setEndDate] = useState<Date>(new Date());

@@ -1,9 +1,9 @@
-import { SignIn } from '@clerk/clerk-react';
+import { SignUp } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useClerkAuth } from '@/hooks/use-clerk-auth';
 
-const Login = () => {
+const SignUpPage = () => {
   const navigate = useNavigate();
   const { isSignedIn, loading } = useClerkAuth();
 
@@ -24,7 +24,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <SignIn
+      <SignUp
         appearance={{
           elements: {
             rootBox: 'mx-auto',
@@ -32,12 +32,12 @@ const Login = () => {
           },
         }}
         routing="path"
-        path="/login"
-        signUpUrl="/signup"
-        afterSignInUrl="/dashboard"
+        path="/signup"
+        signInUrl="/login"
+        afterSignUpUrl="/onboarding/welcome"
       />
     </div>
   );
 };
 
-export default Login;
+export default SignUpPage;

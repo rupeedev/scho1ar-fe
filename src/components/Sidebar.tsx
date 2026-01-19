@@ -30,7 +30,7 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { toast } from "@/components/ui/use-toast";
-import { useSupabaseAuth } from '@/hooks/use-supabase-auth';
+import { useClerkAuth } from '@/hooks/use-clerk-auth';
 
 const SidebarItem = ({ 
   icon: Icon, 
@@ -117,19 +117,19 @@ const Sidebar = ({ onChatToggle }: { onChatToggle?: () => void }) => {
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const [userData, setUserData] = useState<any>(null);
-  const { user, signOut } = useSupabaseAuth();
-  
+  const { user, signOut } = useClerkAuth();
+
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
   };
 
   useEffect(() => {
     if (user) {
-      // Use Supabase user data directly
+      // Use Clerk user data
       setUserData({
-        display_name: user.user_metadata?.display_name || user.email?.split('@')[0] || 'User',
+        display_name: user.fullName || user.firstName || user.email?.split('@')[0] || 'User',
         email: user.email,
-        avatar_url: user.user_metadata?.avatar_url
+        avatar_url: user.imageUrl
       });
     } else {
       setUserData(null);

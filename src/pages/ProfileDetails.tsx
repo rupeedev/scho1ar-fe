@@ -9,7 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Key, Loader2, Camera } from 'lucide-react';
 import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
-import { useSupabaseAuth } from '@/hooks/use-supabase-auth';
+import { useClerkAuth } from '@/hooks/use-clerk-auth';
 import { useToast } from '@/components/ui/use-toast';
 import { 
   Dialog, 
@@ -22,7 +22,7 @@ import {
 import { format } from 'date-fns';
 
 const ProfileDetails = () => {
-  const { user, loading: authLoading } = useSupabaseAuth();
+  const { user, loading: authLoading } = useClerkAuth();
   const [loading, setLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [displayName, setDisplayName] = useState('');
@@ -46,22 +46,22 @@ const ProfileDetails = () => {
     if (user) {
       // Detect user's current timezone
       const detectedTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      
-      // Get and format display name
-      const rawDisplayName = user.user_metadata?.display_name || user.email?.split('@')[0] || '';
+
+      // Get and format display name from Clerk user
+      const rawDisplayName = user.fullName || user.firstName || user.email?.split('@')[0] || '';
       const formattedDisplayName = formatDisplayName(rawDisplayName);
-      
-      // Set initial form values from Supabase user data
+
+      // Set initial form values from Clerk user data
       setDisplayName(formattedDisplayName);
-      setPhone(user.user_metadata?.phone || '');
-      setTimezone(user.user_metadata?.timezone || detectedTimezone);
-      setLanguage(user.user_metadata?.language || 'English');
-      setTwoFactorEnabled(user.user_metadata?.two_factor_enabled || false);
+      setPhone(''); // Clerk doesn't provide phone in basic user object
+      setTimezone(detectedTimezone);
+      setLanguage('English');
+      setTwoFactorEnabled(false);
     }
   }, [user]);
 
   const getAvatarFallback = () => {
-    const displayName = user?.user_metadata?.display_name;
+    const displayName = user?.fullName || user?.firstName;
     if (displayName) {
       const names = displayName.split(' ');
       if (names.length > 1) {
@@ -69,21 +69,20 @@ const ProfileDetails = () => {
       }
       return displayName.substring(0, 2).toUpperCase();
     }
-    
+
     if (user?.email) {
       return user.email.substring(0, 2).toUpperCase();
     }
-    
+
     return "U";
   };
 
   const getProviderInfo = () => {
-    const provider = user?.app_metadata?.provider || 'email';
     const email = user?.email;
-    
-    if (provider === 'email' && email) {
+
+    if (email) {
       const domain = email.split('@')[1];
-      const commonDomains = {
+      const commonDomains: Record<string, string> = {
         'gmail.com': 'Gmail (Personal)',
         'yahoo.com': 'Yahoo (Personal)',
         'hotmail.com': 'Hotmail (Personal)',
@@ -91,7 +90,7 @@ const ProfileDetails = () => {
         'icloud.com': 'iCloud (Personal)',
         'aol.com': 'AOL (Personal)'
       };
-      
+
       if (commonDomains[domain]) {
         return commonDomains[domain];
       } else {
@@ -99,8 +98,8 @@ const ProfileDetails = () => {
         return `${domain} (Corporate)`;
       }
     }
-    
-    return provider.charAt(0).toUpperCase() + provider.slice(1);
+
+    return 'Clerk';
   };
 
   const formatDisplayName = (name: string) => {
@@ -239,7 +238,7 @@ const ProfileDetails = () => {
               <div className="bg-white rounded-md shadow-sm p-6 flex flex-col items-center h-full overflow-y-auto">
                 <div className="relative">
                   <Avatar className="h-24 w-24 mb-3 bg-purple-600">
-                    <AvatarImage src={user?.user_metadata?.avatar_url} alt={user?.user_metadata?.display_name || 'User'} />
+                    <AvatarImage src={user?.imageUrl || undefined} alt={user?.fullName || user?.firstName || 'User'} />
                     <AvatarFallback className="text-4xl">
                       {getAvatarFallback()}
                     </AvatarFallback>
@@ -336,13 +335,13 @@ const ProfileDetails = () => {
                         {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                         Save
                       </Button>
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         onClick={() => {
-                          setDisplayName(user?.user_metadata?.display_name || '');
-                          setPhone(user?.user_metadata?.phone || '');
-                          setTimezone(user?.user_metadata?.timezone || 'UTC');
-                          setLanguage(user?.user_metadata?.language || 'English');
+                          setDisplayName(user?.fullName || user?.firstName || '');
+                          setPhone('');
+                          setTimezone(Intl.DateTimeFormat().resolvedOptions().timeZone);
+                          setLanguage('English');
                           setIsEditMode(false);
                         }}
                         disabled={isSaving}
@@ -425,20 +424,9 @@ const ProfileDetails = () => {
                   </div>
                   
                   <div>
-                    <h3 className="text-sm text-gray-500 mb-1">Joined</h3>
-                    <p className="font-medium">
-                      {user?.created_at 
-                        ? format(new Date(user.created_at), 'MMM d, yyyy \'at\' h:mm:ss a')
-                        : 'Unknown'}
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-sm text-gray-500 mb-1">Last Sign In</h3>
-                    <p className="font-medium">
-                      {user?.last_sign_in_at 
-                        ? format(new Date(user.last_sign_in_at), 'MMM d, yyyy \'at\' h:mm:ss a')
-                        : 'Never'}
+                    <h3 className="text-sm text-gray-500 mb-1">User ID</h3>
+                    <p className="font-medium text-xs text-gray-600 break-all">
+                      {user?.id || 'Unknown'}
                     </p>
                   </div>
                 </div>

@@ -4,11 +4,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { History, Settings, LogOut } from 'lucide-react';
 import { toast } from "@/components/ui/use-toast";
-import { useSupabaseAuth } from '@/hooks/use-supabase-auth';
+import { useClerkAuth } from '@/hooks/use-clerk-auth';
 
 export const ActionButtons: React.FC = () => {
   const navigate = useNavigate();
-  const { signOut } = useSupabaseAuth();
+  const { signOut } = useClerkAuth();
 
   const handleLogout = async () => {
     try {

@@ -5,6 +5,7 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Index from "./pages/Index";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 import ResetPassword from "./pages/ResetPassword";
 import Pricing from "./pages/Pricing";
 import SubscriptionSuccess from "./pages/subscription/Success";
@@ -31,7 +32,7 @@ import AuditLogs from "./pages/AuditLogs";
 import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 import UserProfile from "./pages/UserProfile";
-import SupabaseProtectedRoute from "./components/SupabaseProtectedRoute";
+import ClerkProtectedRoute from "./components/ClerkProtectedRoute";
 import { ApiErrorBoundary } from "./components/ApiErrorBoundary";
 import { errorLogger } from "./lib/error-logging";
 import ErrorHandlingDemo from "./pages/ErrorHandlingDemo";
@@ -69,12 +70,13 @@ const App = () => (
         {/* Public routes */}
         <Route path="/" element={<RouteErrorBoundary><LandingPage /></RouteErrorBoundary>} />
         <Route path="/login" element={<RouteErrorBoundary><Login /></RouteErrorBoundary>} />
+        <Route path="/signup" element={<RouteErrorBoundary><SignUp /></RouteErrorBoundary>} />
         <Route path="/reset-password" element={<RouteErrorBoundary><ResetPassword /></RouteErrorBoundary>} />
         <Route path="/pricing" element={<RouteErrorBoundary><Pricing /></RouteErrorBoundary>} />
         <Route path="/subscription/success" element={<RouteErrorBoundary><SubscriptionSuccess /></RouteErrorBoundary>} />
 
         {/* Onboarding routes - protected but with onboarding provider */}
-        <Route element={<SupabaseProtectedRoute />}>
+        <Route element={<ClerkProtectedRoute />}>
           <Route path="/onboarding/*" element={
             <OnboardingProvider>
               <Routes>
@@ -88,7 +90,7 @@ const App = () => (
         </Route>
 
         {/* Protected routes with Supabase */}
-        <Route element={<SupabaseProtectedRoute />}>
+        <Route element={<ClerkProtectedRoute />}>
           <Route path="/dashboard" element={<RouteErrorBoundary><Index /></RouteErrorBoundary>} />
           <Route path="/user-profile" element={<RouteErrorBoundary><UserProfile /></RouteErrorBoundary>} />
           <Route path="/add-account" element={<RouteErrorBoundary><AddAccount /></RouteErrorBoundary>} />
@@ -120,7 +122,7 @@ const App = () => (
 
         {/* Legacy routes for backward compatibility */}
         <Route path="/sign-in" element={<Navigate to="/login" replace />} />
-        <Route path="/sign-up" element={<Navigate to="/login" replace />} />
+        <Route path="/sign-up" element={<Navigate to="/signup" replace />} />
 
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSupabaseAuth } from './use-supabase-auth';
+import { useClerkAuth } from './use-clerk-auth';
 import { organizationsApi, Organization } from '@/lib/api/organizations';
 import { cloudAccountsApi, CloudAccount } from '@/lib/api/cloud-accounts';
 import { resourcesApi, Resource } from '@/lib/api/resources';
@@ -9,14 +9,14 @@ import { costsApi, CostData } from '@/lib/api/costs';
 
 // Organization hooks - uses backend API
 export function useOrganization() {
-  const { user } = useSupabaseAuth();
+  const { user, isSignedIn } = useClerkAuth();
   const [organization, setOrganization] = useState<Organization | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     const fetchOrganization = async () => {
-      if (!user) {
+      if (!isSignedIn) {
         setOrganization(null);
         setLoading(false);
         return;
@@ -44,7 +44,7 @@ export function useOrganization() {
     };
 
     fetchOrganization();
-  }, [user]);
+  }, [isSignedIn]);
 
   return { organization, loading, error };
 }

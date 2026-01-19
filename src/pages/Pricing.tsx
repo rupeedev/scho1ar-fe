@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { useStripeCheckout } from '@/hooks/use-stripe-checkout';
-import { useSupabaseAuth } from '@/hooks/use-supabase-auth';
+import { useClerkAuth } from '@/hooks/use-clerk-auth';
 import { toast } from 'sonner';
 
 interface PricingTier {
@@ -118,7 +118,7 @@ const pricingTiers: PricingTier[] = [
 export default function Pricing() {
   const [isAnnual, setIsAnnual] = useState(false);
   const { redirectToCheckout } = useStripeCheckout();
-  const { user } = useSupabaseAuth();
+  const { user } = useClerkAuth();
 
   const handleSelectPlan = async (tier: PricingTier) => {
     if (!user) {

@@ -1,7 +1,7 @@
-import { supabase } from '@/lib/supabase';
-import { 
-  ErrorType, 
-  createErrorInfo, 
+import { authTokenManager } from '@/lib/auth-token';
+import {
+  ErrorType,
+  createErrorInfo,
   calculateRetryDelay
 } from '@/lib/error-handling';
 import { errorLogger } from '@/lib/error-logging';
@@ -26,11 +26,10 @@ const DEFAULT_RETRY_CONFIG = {
   retryStatuses: [408, 429, 500, 502, 503, 504]
 };
 
-// Helper function to get JWT token from Supabase auth
+// Helper function to get JWT token from Clerk auth
 async function getAuthToken(): Promise<string | null> {
   try {
-    const { data } = await supabase.auth.getSession();
-    return data.session?.access_token ?? null;
+    return await authTokenManager.getToken();
   } catch (error) {
     console.error('Error getting auth token:', error);
     errorLogger.logError(error, { context: 'getAuthToken' });
@@ -42,29 +41,29 @@ async function getAuthToken(): Promise<string | null> {
 function handleApiError(response: Response, data: any): never {
   // Create a structured error object
   const errorObj: any = new Error(
-    Array.isArray(data.message) 
-      ? data.message.join(', ') 
+    Array.isArray(data.message)
+      ? data.message.join(', ')
       : data.message || `API request failed with status ${response.status}`
   );
-  
+
   // Attach status and other API error properties
   errorObj.status = response.status;
   errorObj.statusText = response.statusText;
   errorObj.url = response.url;
-  
+
   if (data.error) {
     errorObj.apiError = data.error;
   }
-  
+
   if (data.errors) {
     errorObj.validationErrors = data.errors;
   }
-  
+
   // Special cases for certain error types
   if (response.status === 401) {
     errorObj.authError = true;
   }
-  
+
   throw errorObj;
 }
 
@@ -74,25 +73,25 @@ async function apiFetch<T>(
   options: ApiRequestOptions = {}
 ): Promise<T> {
   // Extract and merge retry configuration with defaults
-  const { 
-    retry: retryConfig = {}, 
-    ...fetchOptions 
+  const {
+    retry: retryConfig = {},
+    ...fetchOptions
   } = options;
-  
+
   const retry = {
     ...DEFAULT_RETRY_CONFIG,
     ...retryConfig
   };
-  
+
   const url = `${API_URL}${endpoint}`;
   let attempt = 0;
-  
+
   // Start retry loop
   while (true) {
     try {
       const token = await getAuthToken();
       const organizationId = localStorage.getItem('organizationId');
-      
+
       const headers = {
         'Content-Type': 'application/json',
         ...(token && { Authorization: `Bearer ${token}` }),
@@ -124,27 +123,27 @@ async function apiFetch<T>(
           error.url = response.url;
           throw error;
         }
-        
+
         return await response.text() as unknown as T;
       }
     } catch (error) {
       // Track the attempt
       attempt++;
-      
+
       // Log the error
-      const errorContext = { 
+      const errorContext = {
         url,
         method: fetchOptions.method || 'GET',
         attempt,
         endpoint
       };
-      
+
       errorLogger.logError(error, errorContext);
-      
+
       // Check if we should retry
       const errorInfo = createErrorInfo(error);
-      const shouldRetry = 
-        attempt < retry.maxRetries && 
+      const shouldRetry =
+        attempt < retry.maxRetries &&
         errorInfo.retryable &&
         (
           // Either it's a network error
@@ -153,16 +152,16 @@ async function apiFetch<T>(
           // Or it's an API error with a status code we want to retry
           (errorInfo.statusCode && retry.retryStatuses.includes(errorInfo.statusCode))
         );
-      
+
       if (shouldRetry) {
         // Calculate delay with exponential backoff
         const delay = calculateRetryDelay(attempt - 1, retry.retryDelay);
-        
+
         // Wait before retrying
         await new Promise(resolve => setTimeout(resolve, delay));
         continue; // Retry the request
       }
-      
+
       // If we shouldn't retry, or we've exhausted retries, rethrow the error
       throw error;
     }
@@ -171,30 +170,30 @@ async function apiFetch<T>(
 
 // Export convenience methods for different HTTP methods
 export const apiClient = {
-  get: <T>(endpoint: string, options?: ApiRequestOptions) => 
+  get: <T>(endpoint: string, options?: ApiRequestOptions) =>
     apiFetch<T>(endpoint, { ...options, method: 'GET' }),
-  
+
   post: <T>(endpoint: string, data?: unknown, options?: ApiRequestOptions) =>
     apiFetch<T>(endpoint, {
       ...options,
       method: 'POST',
       body: data ? JSON.stringify(data) : undefined,
     }),
-  
+
   put: <T>(endpoint: string, data?: unknown, options?: ApiRequestOptions) =>
     apiFetch<T>(endpoint, {
       ...options,
       method: 'PUT',
       body: data ? JSON.stringify(data) : undefined,
     }),
-  
+
   patch: <T>(endpoint: string, data?: unknown, options?: ApiRequestOptions) =>
     apiFetch<T>(endpoint, {
       ...options,
       method: 'PATCH',
       body: data ? JSON.stringify(data) : undefined,
     }),
-  
+
   delete: <T>(endpoint: string, options?: ApiRequestOptions) =>
     apiFetch<T>(endpoint, { ...options, method: 'DELETE' }),
 };
