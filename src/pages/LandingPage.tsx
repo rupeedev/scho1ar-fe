@@ -1,156 +1,90 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  ArrowRight, 
-  TrendingDown, 
-  Shield, 
-  Zap, 
-  BarChart3, 
-  Users, 
-  Clock, 
+import {
+  ArrowRight,
+  TrendingDown,
+  Shield,
+  Zap,
+  BarChart3,
   CheckCircle,
-  Star,
-  Play,
   DollarSign,
-  Gauge,
-  Target
+  Cloud,
+  Cpu,
+  LineChart,
+  Settings,
+  Lock
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 
 const LandingPage = () => {
   const features = [
     {
-      icon: <TrendingDown className="h-8 w-8 text-blue-600" />,
-      title: "Reduce Cloud Costs by 40%",
-      description: "AI-powered optimization identifies unused resources and right-sizes your infrastructure automatically."
+      icon: <TrendingDown className="h-6 w-6" />,
+      title: "Cost Optimization",
+      description: "AI-powered analysis identifies unused resources and right-sizes your infrastructure automatically."
     },
     {
-      icon: <BarChart3 className="h-8 w-8 text-green-600" />,
-      title: "Real-time Cost Analytics",
+      icon: <BarChart3 className="h-6 w-6" />,
+      title: "Real-time Analytics",
       description: "Get instant visibility into your cloud spending patterns with detailed breakdowns and forecasting."
     },
     {
-      icon: <Shield className="h-8 w-8 text-purple-600" />,
+      icon: <Shield className="h-6 w-6" />,
       title: "Multi-Cloud Security",
-      description: "Secure monitoring across AWS, Azure, and GCP with enterprise-grade encryption and compliance."
+      description: "Secure monitoring across AWS, Azure, and GCP with enterprise-grade encryption."
     },
     {
-      icon: <Zap className="h-8 w-8 text-yellow-600" />,
-      title: "Automated Optimization",
-      description: "Set it and forget it. Our smart algorithms continuously optimize your cloud resources 24/7."
+      icon: <Zap className="h-6 w-6" />,
+      title: "Automated Actions",
+      description: "Schedule resource management and let our algorithms optimize your cloud 24/7."
+    },
+    {
+      icon: <LineChart className="h-6 w-6" />,
+      title: "Cost Forecasting",
+      description: "Predict future spending with ML-powered forecasting and budget alerts."
+    },
+    {
+      icon: <Settings className="h-6 w-6" />,
+      title: "Custom Policies",
+      description: "Define optimization rules that match your organization's unique requirements."
     }
   ];
 
-  const benefits = [
-    "Instant cost savings discovery",
-    "Automated resource right-sizing",
-    "Multi-cloud unified dashboard",
-    "Predictive cost forecasting",
-    "Custom alert notifications",
-    "Detailed usage analytics"
-  ];
-
-  const testimonials = [
-    {
-      name: "Sarah Chen",
-      role: "CTO at TechFlow",
-      company: "TechFlow Solutions",
-      content: "Scho1ar Solution helped us reduce our AWS bill by 35% in the first month. The insights are incredible!",
-      rating: 5
-    },
-    {
-      name: "Marcus Rodriguez",
-      role: "DevOps Lead",
-      company: "DataDrive Inc",
-      content: "Finally, a tool that makes cloud cost optimization simple. Our team loves the automated recommendations.",
-      rating: 5
-    },
-    {
-      name: "Jennifer Park",
-      role: "Finance Director",
-      company: "ScaleUp Ventures",
-      content: "The cost forecasting feature helped us budget accurately and avoid surprise bills.",
-      rating: 5
-    }
-  ];
-
-  const pricingPlans = [
-    {
-      name: "Starter",
-      price: "$29",
-      period: "/month",
-      description: "Perfect for small teams getting started",
-      features: [
-        "Up to 3 cloud accounts",
-        "Basic cost analytics",
-        "Email notifications",
-        "7-day free trial"
-      ],
-      cta: "Start Free Trial",
-      popular: false
-    },
-    {
-      name: "Professional",
-      price: "$99",
-      period: "/month",
-      description: "Ideal for growing businesses",
-      features: [
-        "Unlimited cloud accounts",
-        "Advanced analytics & forecasting",
-        "Automated optimization",
-        "Priority support",
-        "Custom integrations"
-      ],
-      cta: "Get Started",
-      popular: true
-    },
-    {
-      name: "Enterprise",
-      price: "Custom",
-      period: "",
-      description: "For large organizations with complex needs",
-      features: [
-        "Everything in Professional",
-        "Dedicated account manager",
-        "Custom reporting",
-        "SLA guarantees",
-        "Advanced security features"
-      ],
-      cta: "Contact Sales",
-      popular: false
-    }
+  const stats = [
+    { value: "40%", label: "Average Cost Reduction" },
+    { value: "$2.3M", label: "Total Savings Generated" },
+    { value: "500+", label: "Companies Trust Us" },
+    { value: "99.9%", label: "Uptime Guarantee" }
   ];
 
   return (
     <div className="min-h-screen bg-white">
       {/* Header/Navigation */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <div className="flex items-center">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <DollarSign className="h-5 w-5 text-white" />
-                </div>
-                <span className="ml-2 text-xl font-bold text-gray-900">Scho1ar Solution</span>
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-[#1a65d5] rounded-lg flex items-center justify-center">
+                <Cloud className="h-5 w-5 text-white" />
               </div>
+              <span className="text-xl font-semibold tracking-tight text-gray-900">Scho1ar</span>
             </div>
-            
-            <nav className="hidden md:flex space-x-8">
-              <a href="/" className="text-gray-600 hover:text-gray-900 font-medium">A(I)nfra</a>
-              <a href="https://app.scho1ar.com/about" className="text-gray-600 hover:text-gray-900 font-medium">iKanban</a>
-              <Link to="/pricing" className="text-gray-600 hover:text-gray-900">Pricing</Link>
-              <a href="#contact" className="text-gray-600 hover:text-gray-900">Contact</a>
+
+            <nav className="hidden md:flex items-center gap-8">
+              <a href="#features" className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors">Features</a>
+              <a href="#how-it-works" className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors">How it Works</a>
+              <Link to="/pricing" className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors">Pricing</Link>
+              <a href="#contact" className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors">Contact</a>
             </nav>
-            
-            <div className="flex items-center space-x-4">
+
+            <div className="flex items-center gap-3">
               <Link to="/login">
-                <Button variant="ghost">Sign In</Button>
+                <Button variant="ghost" className="text-sm font-medium">Sign In</Button>
               </Link>
               <Link to="/login">
-                <Button>Get Started</Button>
+                <Button className="bg-[#1a65d5] hover:bg-[#1454b8] text-sm font-medium px-5">
+                  Get Started
+                </Button>
               </Link>
             </div>
           </div>
@@ -158,50 +92,55 @@ const LandingPage = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-blue-50 to-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <Badge className="mb-4 bg-blue-100 text-blue-800 border-blue-200">
-              🚀 Trusted by 500+ Companies
-            </Badge>
-            
-            <h1 className="text-5xl font-bold text-gray-900 mb-6">
-              Slash Your Cloud Costs by
-              <span className="text-blue-600"> 40% or More</span>
+      <section className="pt-32 pb-20 lg:pt-40 lg:pb-32 relative overflow-hidden">
+        {/* Background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-50/80 to-white pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#1a65d5]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 relative">
+          <div className="max-w-4xl">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#1a65d5]/10 rounded-full mb-8">
+              <span className="w-2 h-2 bg-[#1a65d5] rounded-full animate-pulse" />
+              <span className="text-sm font-medium text-[#1a65d5]">Trusted by 500+ companies worldwide</span>
+            </div>
+
+            <h1 className="text-5xl lg:text-7xl font-bold text-gray-900 leading-[1.1] tracking-tight mb-6">
+              10x Your Cloud
+              <br />
+              <span className="text-[#1a65d5]">Cost Efficiency</span>
             </h1>
-            
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Scho1ar Solution's AI-powered platform automatically optimizes your cloud infrastructure, 
-              eliminates waste, and provides actionable insights to reduce your monthly bills.
+
+            <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed mb-10 max-w-2xl">
+              AI-powered cloud cost management that automatically optimizes your infrastructure,
+              eliminates waste, and delivers actionable insights.
             </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+
+            <div className="flex flex-col sm:flex-row gap-4 mb-12">
               <Link to="/login">
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-4">
-                  Start 14-Day Free Trial
+                <Button size="lg" className="bg-[#1a65d5] hover:bg-[#1454b8] text-base font-medium px-8 h-14 rounded-xl">
+                  Start Free Trial
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Link to="/pricing">
-                <Button variant="outline" size="lg" className="text-lg px-8 py-4 border-blue-600 text-blue-600 hover:bg-blue-50">
-                  <DollarSign className="mr-2 h-5 w-5" />
+                <Button variant="outline" size="lg" className="text-base font-medium px-8 h-14 rounded-xl border-gray-300 hover:bg-gray-50">
                   View Pricing
                 </Button>
               </Link>
             </div>
-            
-            <div className="flex items-center justify-center space-x-8 text-sm text-gray-500">
-              <div className="flex items-center">
-                <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                No credit card required
+
+            <div className="flex flex-wrap items-center gap-6 text-sm text-gray-500">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                <span>No credit card required</span>
               </div>
-              <div className="flex items-center">
-                <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                Setup in 5 minutes
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                <span>Setup in 5 minutes</span>
               </div>
-              <div className="flex items-center">
-                <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                Cancel anytime
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                <span>Cancel anytime</span>
               </div>
             </div>
           </div>
@@ -209,104 +148,107 @@ const LandingPage = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-3xl font-bold text-gray-900">40%</div>
-              <div className="text-gray-600">Average Cost Reduction</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-gray-900">$2.3M</div>
-              <div className="text-gray-600">Total Savings Generated</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-gray-900">500+</div>
-              <div className="text-gray-600">Companies Trust Us</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-gray-900">99.9%</div>
-              <div className="text-gray-600">Uptime Guarantee</div>
-            </div>
+      <section className="py-16 border-y border-gray-100 bg-gray-50/50">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-16">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center">
+                <div className="text-4xl lg:text-5xl font-bold text-gray-900 mb-2">{stat.value}</div>
+                <div className="text-sm text-gray-500 font-medium">{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="features" className="py-24 lg:py-32">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Everything You Need to Optimize Cloud Costs
+            <h2 className="text-3xl lg:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
+              Everything you need to
+              <br />
+              <span className="text-[#1a65d5]">optimize cloud costs</span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Powerful features designed to give you complete visibility and control over your cloud spending.
             </p>
           </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
-                <CardContent className="p-6">
-                  <div className="mb-4">{feature.icon}</div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
-                </CardContent>
-              </Card>
+              <div
+                key={index}
+                className="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-[#1a65d5]/30 hover:shadow-lg hover:shadow-[#1a65d5]/5 transition-all duration-300"
+              >
+                <div className="w-12 h-12 bg-[#1a65d5]/10 rounded-xl flex items-center justify-center text-[#1a65d5] mb-5 group-hover:bg-[#1a65d5] group-hover:text-white transition-colors duration-300">
+                  {feature.icon}
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Benefits Section */}
-      <section className="py-20 bg-blue-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+      {/* How it Works Section */}
+      <section id="how-it-works" className="py-24 lg:py-32 bg-gray-900 text-white">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-3xl font-bold text-white mb-6">
-                Why Choose Scho1ar Solution for Cloud Optimization?
+              <h2 className="text-3xl lg:text-5xl font-bold mb-6 tracking-tight">
+                Reduce costs by
+                <br />
+                <span className="text-[#1a65d5]">40% or more</span>
               </h2>
-              <p className="text-blue-100 text-lg mb-8">
-                Join hundreds of companies who have already transformed their cloud spending with our intelligent platform.
+              <p className="text-lg text-gray-400 mb-10 leading-relaxed">
+                Our AI continuously analyzes your cloud infrastructure, identifies optimization opportunities,
+                and implements changes automatically—so you can focus on building, not budgeting.
               </p>
-              
-              <div className="grid gap-4">
-                {benefits.map((benefit, index) => (
-                  <div key={index} className="flex items-center">
-                    <CheckCircle className="h-5 w-5 text-green-400 mr-3 flex-shrink-0" />
-                    <span className="text-white">{benefit}</span>
+
+              <div className="space-y-5 mb-10">
+                {[
+                  "Instant cost savings discovery",
+                  "Automated resource right-sizing",
+                  "Multi-cloud unified dashboard",
+                  "Predictive cost forecasting",
+                  "Custom alert notifications"
+                ].map((item, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <div className="w-5 h-5 rounded-full bg-[#1a65d5]/20 flex items-center justify-center">
+                      <CheckCircle className="h-3 w-3 text-[#1a65d5]" />
+                    </div>
+                    <span className="text-gray-300">{item}</span>
                   </div>
                 ))}
               </div>
-              
-              <div className="mt-8">
-                <Link to="/login">
-                  <Button size="lg" variant="secondary" className="bg-white text-blue-600 hover:bg-gray-100">
-                    Start Your Free Trial
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
-              </div>
+
+              <Link to="/login">
+                <Button size="lg" className="bg-[#1a65d5] hover:bg-[#1454b8] text-base font-medium px-8 h-14 rounded-xl">
+                  Start Free Trial
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
             </div>
-            
-            <div className="bg-white rounded-lg p-8 shadow-xl">
+
+            <div className="bg-gray-800 rounded-2xl p-8 lg:p-10">
               <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Monthly Cloud Bill</span>
-                  <span className="text-2xl font-bold text-red-600">$12,450</span>
+                <div className="flex items-center justify-between py-4 border-b border-gray-700">
+                  <span className="text-gray-400">Monthly Cloud Bill</span>
+                  <span className="text-2xl font-bold text-red-400">$12,450</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-600">After Scho1ar Solution Optimization</span>
-                  <span className="text-2xl font-bold text-green-600">$7,470</span>
+                <div className="flex items-center justify-between py-4 border-b border-gray-700">
+                  <span className="text-gray-400">After Scho1ar Optimization</span>
+                  <span className="text-2xl font-bold text-green-400">$7,470</span>
                 </div>
-                <hr />
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-900 font-semibold">Monthly Savings</span>
-                  <span className="text-3xl font-bold text-blue-600">$4,980</span>
+                <div className="flex items-center justify-between py-4">
+                  <span className="text-white font-semibold">Monthly Savings</span>
+                  <span className="text-3xl font-bold text-[#1a65d5]">$4,980</span>
                 </div>
-                <div className="bg-green-50 p-4 rounded-lg">
-                  <div className="text-green-800 font-semibold">40% Cost Reduction</div>
-                  <div className="text-green-600 text-sm">$59,760 saved annually</div>
+                <div className="bg-[#1a65d5]/10 p-5 rounded-xl">
+                  <div className="text-[#1a65d5] font-semibold text-lg mb-1">40% Cost Reduction</div>
+                  <div className="text-gray-400 text-sm">$59,760 saved annually</div>
                 </div>
               </div>
             </div>
@@ -314,171 +256,125 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section id="testimonials" className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Trust Section */}
+      <section className="py-24 lg:py-32">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Loved by Cloud Engineers Worldwide
+            <h2 className="text-3xl lg:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
+              Built for enterprise
             </h2>
-            <p className="text-xl text-gray-600">
-              See what our customers say about their cost optimization journey
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Security and compliance at the core of everything we do.
             </p>
           </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
-                <CardContent className="p-6">
-                  <div className="flex mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                    ))}
-                  </div>
-                  <p className="text-gray-600 mb-4">"{testimonial.content}"</p>
-                  <div>
-                    <div className="font-semibold text-gray-900">{testimonial.name}</div>
-                    <div className="text-sm text-gray-500">{testimonial.role}</div>
-                    <div className="text-sm text-gray-500">{testimonial.company}</div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Pricing Section */}
-      <section id="pricing" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Simple, Transparent Pricing
-            </h2>
-            <p className="text-xl text-gray-600">
-              Choose the plan that's right for your team. All plans include our core optimization features.
-            </p>
-          </div>
-          
           <div className="grid md:grid-cols-3 gap-8">
-            {pricingPlans.map((plan, index) => (
-              <Card key={index} className={`relative hover:shadow-lg transition-shadow duration-300 ${plan.popular ? 'border-2 border-blue-500' : ''}`}>
-                {plan.popular && (
-                  <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-blue-500">
-                    Most Popular
-                  </Badge>
-                )}
-                <CardContent className="p-6">
-                  <div className="text-center mb-6">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">{plan.name}</h3>
-                    <p className="text-gray-600 mb-4">{plan.description}</p>
-                    <div className="mb-4">
-                      <span className="text-4xl font-bold text-gray-900">{plan.price}</span>
-                      <span className="text-gray-600">{plan.period}</span>
-                    </div>
-                  </div>
-                  
-                  <ul className="space-y-3 mb-6">
-                    {plan.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center">
-                        <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                        <span className="text-gray-600">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  <Link to="/login">
-                    <Button 
-                      className={`w-full ${plan.popular ? 'bg-blue-600 hover:bg-blue-700' : ''}`}
-                      variant={plan.popular ? 'default' : 'outline'}
-                    >
-                      {plan.cta}
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
+            {[
+              {
+                icon: <Lock className="h-6 w-6" />,
+                title: "SOC 2 Compliant",
+                description: "Enterprise-grade security with SOC 2 Type II certification."
+              },
+              {
+                icon: <Shield className="h-6 w-6" />,
+                title: "Data Encryption",
+                description: "AES-256 encryption for all data at rest and in transit."
+              },
+              {
+                icon: <Cpu className="h-6 w-6" />,
+                title: "99.9% Uptime",
+                description: "Guaranteed availability with redundant infrastructure."
+              }
+            ].map((item, index) => (
+              <div key={index} className="text-center p-8">
+                <div className="w-14 h-14 bg-gray-100 rounded-2xl flex items-center justify-center text-gray-600 mx-auto mb-5">
+                  {item.icon}
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{item.title}</h3>
+                <p className="text-gray-600">{item.description}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Ready to Start Saving on Cloud Costs?
+      <section className="py-24 lg:py-32 bg-[#1a65d5]">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
+          <h2 className="text-3xl lg:text-5xl font-bold text-white mb-4 tracking-tight">
+            Ready to optimize your cloud?
           </h2>
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Join thousands of companies already optimizing their cloud infrastructure with Scho1ar Solution.
+          <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
+            Join hundreds of companies saving millions on cloud costs.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/login">
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-4">
-                Start Free 14-Day Trial
+              <Button size="lg" className="bg-white text-[#1a65d5] hover:bg-gray-100 text-base font-medium px-8 h-14 rounded-xl">
+                Start Free Trial
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <Button variant="outline" size="lg" className="text-lg px-8 py-4 text-white border-white hover:bg-white hover:text-gray-900">
+            <Button variant="outline" size="lg" className="text-base font-medium px-8 h-14 rounded-xl border-white/30 text-white hover:bg-white/10">
               Schedule Demo
             </Button>
           </div>
-          
-          <p className="text-sm text-gray-400 mt-4">
+
+          <p className="text-sm text-white/60 mt-6">
             No credit card required • Setup in minutes • Cancel anytime
           </p>
         </div>
       </section>
 
       {/* Footer */}
-      <footer id="contact" className="bg-white border-t border-gray-200 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="col-span-1">
-              <div className="flex items-center mb-4">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <DollarSign className="h-5 w-5 text-white" />
+      <footer id="contact" className="bg-gray-900 text-white py-16">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+          <div className="grid md:grid-cols-4 gap-12 mb-12">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 bg-[#1a65d5] rounded-lg flex items-center justify-center">
+                  <Cloud className="h-5 w-5 text-white" />
                 </div>
-                <span className="ml-2 text-xl font-bold text-gray-900">Scho1ar Solution</span>
+                <span className="text-xl font-semibold">Scho1ar</span>
               </div>
-              <p className="text-gray-600 mb-4">
+              <p className="text-gray-400 text-sm leading-relaxed">
                 The smart way to optimize your cloud costs and maximize your infrastructure ROI.
               </p>
             </div>
-            
+
             <div>
-              <h3 className="font-semibold text-gray-900 mb-4">Product</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li><a href="#features" className="hover:text-gray-900">Features</a></li>
-                <li><a href="#pricing" className="hover:text-gray-900">Pricing</a></li>
-                <li><a href="#" className="hover:text-gray-900">Integrations</a></li>
-                <li><a href="#" className="hover:text-gray-900">API</a></li>
+              <h3 className="font-semibold text-white mb-4">Product</h3>
+              <ul className="space-y-3 text-sm text-gray-400">
+                <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
+                <li><Link to="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
+                <li><a href="#" className="hover:text-white transition-colors">Integrations</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">API</a></li>
               </ul>
             </div>
-            
+
             <div>
-              <h3 className="font-semibold text-gray-900 mb-4">Company</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li><a href="#" className="hover:text-gray-900">About</a></li>
-                <li><a href="#" className="hover:text-gray-900">Blog</a></li>
-                <li><a href="#" className="hover:text-gray-900">Careers</a></li>
-                <li><a href="#" className="hover:text-gray-900">Contact</a></li>
+              <h3 className="font-semibold text-white mb-4">Company</h3>
+              <ul className="space-y-3 text-sm text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">About</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
               </ul>
             </div>
-            
+
             <div>
-              <h3 className="font-semibold text-gray-900 mb-4">Support</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li><a href="#" className="hover:text-gray-900">Help Center</a></li>
-                <li><a href="#" className="hover:text-gray-900">Documentation</a></li>
-                <li><a href="#" className="hover:text-gray-900">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-gray-900">Terms of Service</a></li>
+              <h3 className="font-semibold text-white mb-4">Support</h3>
+              <ul className="space-y-3 text-sm text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
               </ul>
             </div>
           </div>
-          
-          <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-600">
-            <p>&copy; 2025 Scho1ar Solution Inc. All rights reserved.</p>
+
+          <div className="border-t border-gray-800 pt-8 text-center text-sm text-gray-500">
+            <p>&copy; {new Date().getFullYear()} Scho1ar Inc. All rights reserved.</p>
           </div>
         </div>
       </footer>
