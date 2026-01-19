@@ -1,11 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useSupabaseAuth } from './use-supabase-auth';
-import { supabase } from '@/lib/supabase';
+import { organizationsApi, Organization } from '@/lib/api/organizations';
+import { cloudAccountsApi, CloudAccount } from '@/lib/api/cloud-accounts';
+import { resourcesApi, Resource } from '@/lib/api/resources';
+import { teamsApi, Team } from '@/lib/api/teams';
+import { schedulesApi, Schedule } from '@/lib/api/schedules';
+import { costsApi, CostData } from '@/lib/api/costs';
 
-// Organization hooks
+// Organization hooks - uses backend API
 export function useOrganization() {
   const { user } = useSupabaseAuth();
-  const [organization, setOrganization] = useState<any>(null);
+  const [organization, setOrganization] = useState<Organization | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -19,31 +24,17 @@ export function useOrganization() {
 
       try {
         setLoading(true);
-        
-        // First, get the user's organization_id
-        const { data: userData, error: userError } = await supabase
-          .from('app_users')
-          .select('organization_id')
-          .eq('id', user.id)
-          .maybeSingle();
-        
-        if (userError) throw userError;
-        
-        if (!userData) {
+
+        // Get user's organizations via backend API
+        const organizations = await organizationsApi.getAll();
+
+        if (organizations && organizations.length > 0) {
+          setOrganization(organizations[0]);
+          // Store organization ID for API client header
+          localStorage.setItem('organizationId', organizations[0].id);
+        } else {
           setOrganization(null);
-          return;
         }
-        
-        // Then get the organization details
-        const { data, error: orgError } = await supabase
-          .from('organizations')
-          .select('*')
-          .eq('id', userData.organization_id)
-          .maybeSingle();
-        
-        if (orgError) throw orgError;
-        
-        setOrganization(data);
       } catch (err) {
         console.error('Error fetching organization:', err);
         setError(err instanceof Error ? err : new Error('Failed to fetch organization'));
@@ -58,9 +49,9 @@ export function useOrganization() {
   return { organization, loading, error };
 }
 
-// Cloud Accounts hooks
+// Cloud Accounts hooks - uses backend API
 export function useCloudAccounts(organizationId?: string) {
-  const [accounts, setAccounts] = useState<any[]>([]);
+  const [accounts, setAccounts] = useState<CloudAccount[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -74,13 +65,7 @@ export function useCloudAccounts(organizationId?: string) {
 
       try {
         setLoading(true);
-        const { data, error: fetchError } = await supabase
-          .from('cloud_accounts')
-          .select('*')
-          .eq('organization_id', organizationId);
-        
-        if (fetchError) throw fetchError;
-        
+        const data = await cloudAccountsApi.getAll(organizationId);
         setAccounts(data || []);
       } catch (err) {
         console.error('Error fetching cloud accounts:', err);
@@ -96,9 +81,9 @@ export function useCloudAccounts(organizationId?: string) {
   return { accounts, loading, error };
 }
 
-// Resources hooks
+// Resources hooks - uses backend API
 export function useResources(cloudAccountId?: string) {
-  const [resources, setResources] = useState<any[]>([]);
+  const [resources, setResources] = useState<Resource[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -112,13 +97,7 @@ export function useResources(cloudAccountId?: string) {
 
       try {
         setLoading(true);
-        const { data, error: fetchError } = await supabase
-          .from('resources')
-          .select('*')
-          .eq('cloud_account_id', cloudAccountId);
-        
-        if (fetchError) throw fetchError;
-        
+        const data = await resourcesApi.getAll(cloudAccountId);
         setResources(data || []);
       } catch (err) {
         console.error('Error fetching resources:', err);
@@ -134,14 +113,14 @@ export function useResources(cloudAccountId?: string) {
   return { resources, loading, error };
 }
 
-// Cost trend hooks
+// Cost trend hooks - uses backend API
 export function useCostTrend(
   organizationId?: string,
   startDate?: string,
   endDate?: string,
   granularity: 'DAILY' | 'MONTHLY' = 'DAILY'
 ) {
-  const [costData, setCostData] = useState<any[]>([]);
+  const [costData, setCostData] = useState<CostData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -155,23 +134,12 @@ export function useCostTrend(
 
       try {
         setLoading(true);
-        const { data, error: fetchError } = await supabase
-          .from('cost_entries')
-          .select(`
-            id,
-            date,
-            cost,
-            currency,
-            service_name,
-            cloud_accounts!inner(id, name, organization_id)
-          `)
-          .eq('cloud_accounts.organization_id', organizationId)
-          .gte('date', startDate)
-          .lte('date', endDate)
-          .eq('granularity', granularity);
-        
-        if (fetchError) throw fetchError;
-        
+        const data = await costsApi.getCostTrend(
+          organizationId,
+          startDate,
+          endDate,
+          granularity
+        );
         setCostData(data || []);
       } catch (err) {
         console.error('Error fetching cost trend:', err);
@@ -187,9 +155,9 @@ export function useCostTrend(
   return { costData, loading, error };
 }
 
-// Schedules hooks
+// Schedules hooks - uses backend API
 export function useSchedules(organizationId?: string) {
-  const [schedules, setSchedules] = useState<any[]>([]);
+  const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -203,18 +171,8 @@ export function useSchedules(organizationId?: string) {
 
       try {
         setLoading(true);
-        const { data, error: fetchError } = await supabase
-          .from('schedules')
-          .select(`
-            *,
-            scheduled_resources(
-              resource_id
-            )
-          `)
-          .eq('organization_id', organizationId);
-        
-        if (fetchError) throw fetchError;
-        
+        // The schedules API gets schedules based on organization context from JWT
+        const data = await schedulesApi.getAll();
         setSchedules(data || []);
       } catch (err) {
         console.error('Error fetching schedules:', err);
@@ -230,9 +188,9 @@ export function useSchedules(organizationId?: string) {
   return { schedules, loading, error };
 }
 
-// Teams hooks
+// Teams hooks - uses backend API
 export function useTeams(organizationId?: string) {
-  const [teams, setTeams] = useState<any[]>([]);
+  const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -246,19 +204,7 @@ export function useTeams(organizationId?: string) {
 
       try {
         setLoading(true);
-        const { data, error: fetchError } = await supabase
-          .from('teams')
-          .select(`
-            *,
-            team_members(
-              user_id,
-              role_in_team
-            )
-          `)
-          .eq('organization_id', organizationId);
-        
-        if (fetchError) throw fetchError;
-        
+        const data = await teamsApi.getAll(organizationId);
         setTeams(data || []);
       } catch (err) {
         console.error('Error fetching teams:', err);
