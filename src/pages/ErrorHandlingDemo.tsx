@@ -20,7 +20,7 @@ const ErrorHandlingDemoPage: React.FC = () => {
         <div className="p-6 bg-gray-50 rounded-lg border">
           <h2 className="text-xl font-semibold mb-4">About the Error Handling System</h2>
           <p className="mb-4">
-            This demo page showcases the comprehensive error handling system implemented in CostPie:
+            This demo page showcases the comprehensive error handling system implemented in Scho1ar Solution:
           </p>
           <ul className="list-disc list-inside space-y-2 mb-4">
             <li>

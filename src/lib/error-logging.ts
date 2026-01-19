@@ -1,5 +1,5 @@
 /**
- * Error logging service for CostPie application
+ * Error logging service for Scho1ar Solution application
  * Centralizes error logging and reporting
  */
 

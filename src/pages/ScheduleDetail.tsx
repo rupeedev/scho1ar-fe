@@ -445,7 +445,7 @@ const ScheduleDetail = () => {
             <span>Privacy Policy</span>
             <span>Contact us</span>
             <span>About</span>
-            <span className="md:ml-auto">© 2021 - {new Date().getFullYear()}, CostPie Inc. or its affiliates</span>
+            <span className="md:ml-auto">© 2021 - {new Date().getFullYear()}, Scho1ar Solution Inc. or its affiliates</span>
           </div>
         </div>
       </div>

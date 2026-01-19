@@ -53,7 +53,7 @@ const Welcome = () => {
     <OnboardingLayout
       currentStep={1}
       totalSteps={4}
-      title="Welcome to CostPie!"
+      title="Welcome to Scho1ar Solution!"
       description="Let's get your cloud cost optimization journey started in just a few minutes."
     >
       <div className="space-y-8">

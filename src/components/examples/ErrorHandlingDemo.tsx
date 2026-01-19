@@ -244,7 +244,7 @@ const ErrorBoundaryDemo: React.FC = () => {
       <CardHeader>
         <CardTitle>Complete Error Handling Demo</CardTitle>
         <CardDescription>
-          Explore different error handling techniques in CostPie
+          Explore different error handling techniques in Scho1ar Solution
         </CardDescription>
       </CardHeader>
       

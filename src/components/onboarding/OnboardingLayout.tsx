@@ -29,7 +29,7 @@ const OnboardingLayout: React.FC<OnboardingLayoutProps> = ({
                 <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                   <DollarSign className="h-5 w-5 text-white" />
                 </div>
-                <span className="ml-2 text-xl font-bold text-gray-900">CostPie</span>
+                <span className="ml-2 text-xl font-bold text-gray-900">Scho1ar</span>
               </div>
               
               <div className="text-sm text-gray-500">

@@ -299,14 +299,14 @@ export default function Pricing() {
             </h3>
             <p className="text-blue-100 text-lg">
               Our customers typically save $150-$1,000+ monthly in cloud costs. 
-              That's 5-20x return on your CostPie investment.
+              That's 5-20x return on your Scho1ar Solution investment.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 text-center">
             <div>
               <div className="text-3xl font-bold text-blue-600 mb-2">500+</div>
-              <p className="text-gray-600">Companies trust CostPie</p>
+              <p className="text-gray-600">Companies trust Scho1ar Solution</p>
             </div>
             <div>
               <div className="text-3xl font-bold text-blue-600 mb-2">$2.3M+</div>

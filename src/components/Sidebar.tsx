@@ -213,7 +213,7 @@ const Sidebar = ({ onChatToggle }: { onChatToggle?: () => void }) => {
                 <path d="M22 10h-4.5v2H22c1.103 0 2 .897 2 2s-.897 2-2 2h-2v-4h-2v4h-4v2h4v4h2v-4h2c2.206 0 4-1.794 4-4s-1.794-4-4-4zm-12 4c1.103 0 2 .897 2 2s-.897 2-2 2h-2v-4h2zm0-2h-4v8h4c2.206 0 4-1.794 4-4s-1.794-4-4-4z" fill="#10B981" />
               </svg>
             </div>
-            <span className="font-bold text-xl bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">CostPie</span>
+            <span className="font-bold text-xl bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Scho1ar</span>
           </>
         )}
         
@@ -380,7 +380,7 @@ const Sidebar = ({ onChatToggle }: { onChatToggle?: () => void }) => {
         {!collapsed && (
           <div className="px-4 pb-4">
             <div className="text-xs text-gray-500 text-center">
-              v1.0.0 • CostPie
+              v1.0.0 • Scho1ar
             </div>
           </div>
         )}

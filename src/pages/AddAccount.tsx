@@ -331,7 +331,7 @@ const AddAccount = () => {
                             name="roleArn"
                             value={accountData.roleArn}
                             onChange={handleInputChange}
-                            placeholder="arn:aws:iam::123456789012:role/CostPieRole"
+                            placeholder="arn:aws:iam::123456789012:role/Scho1arRole"
                             className="mt-1"
                           />
                           {errors.roleArn && (

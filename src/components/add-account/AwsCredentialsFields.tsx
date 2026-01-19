@@ -23,7 +23,7 @@ const AwsCredentialsFields: React.FC<AwsCredentialsFieldsProps> = ({
           name="roleArn" 
           value={roleArn}
           onChange={handleInputChange}
-          placeholder="arn:aws:iam::999999999999:role/CostPieRole" 
+          placeholder="arn:aws:iam::999999999999:role/Scho1arRole" 
           className="mt-1"
         />
       </div>

@@ -74,7 +74,7 @@ const SupportChat = ({ isOpen, onClose, onOpen }: SupportChatProps) => {
     setTimeout(() => {
       const supportMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: "Thank you for your message! Our support team will get back to you shortly. In the meantime, you can check our documentation or continue using CostPie.",
+        text: "Thank you for your message! Our support team will get back to you shortly. In the meantime, you can check our documentation or continue using Scho1ar Solution.",
         sender: 'support',
         timestamp: new Date(),
       };

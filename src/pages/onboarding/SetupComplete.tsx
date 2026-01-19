@@ -52,7 +52,7 @@ const SetupComplete = () => {
     <OnboardingLayout
       currentStep={4}
       totalSteps={4}
-      title="Welcome to CostPie!"
+      title="Welcome to Scho1ar Solution!"
       description="Your account is ready. Here's what you can do next."
     >
       <div className="space-y-8">
@@ -153,7 +153,7 @@ const SetupComplete = () => {
           <CardContent className="p-6 text-center">
             <h4 className="font-medium text-gray-900 mb-2">Need Help Getting Started?</h4>
             <p className="text-gray-600 text-sm mb-4">
-              Our team is here to help you get the most out of CostPie.
+              Our team is here to help you get the most out of Scho1ar Solution.
             </p>
             <div className="flex justify-center space-x-4">
               <Button variant="outline" size="sm">

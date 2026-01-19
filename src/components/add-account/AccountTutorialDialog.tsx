@@ -37,7 +37,7 @@ const AccountTutorialDialog: React.FC<AccountTutorialDialogProps> = ({ open, onO
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Welcome to CostPie!</DialogTitle>
+          <DialogTitle>Welcome to Scho1ar Solution!</DialogTitle>
           <DialogDescription>
             This guide will help you to get comfortable with the system.
             Just click on this button anytime when you need to see it again. Click "Next" to continue.
@@ -104,7 +104,7 @@ const AccountTutorialDialog: React.FC<AccountTutorialDialogProps> = ({ open, onO
               <div className="text-sm">
                 <ol className="list-decimal pl-5 space-y-4" start={5}>
                   <li>
-                    Wait until both <span className="font-medium">CostPieRole</span> and <span className="font-medium">CostPiePolicy</span> have <span className="text-green-500 font-medium">CREATE_COMPLETE</span> status.
+                    Wait until both <span className="font-medium">Scho1ar SolutionRole</span> and <span className="font-medium">Scho1ar SolutionPolicy</span> have <span className="text-green-500 font-medium">CREATE_COMPLETE</span> status.
                   </li>
                 </ol>
               </div>
@@ -116,7 +116,7 @@ const AccountTutorialDialog: React.FC<AccountTutorialDialogProps> = ({ open, onO
               <div className="text-sm">
                 <ol className="list-decimal pl-5 space-y-4" start={6}>
                   <li>
-                    Open <span className="font-medium">Outputs</span> tab and use <span className="font-medium">Role ARN</span> and <span className="font-medium">External ID</span> values to add your AWS account to CostPie.
+                    Open <span className="font-medium">Outputs</span> tab and use <span className="font-medium">Role ARN</span> and <span className="font-medium">External ID</span> values to add your AWS account to Scho1ar Solution.
                   </li>
                 </ol>
               </div>

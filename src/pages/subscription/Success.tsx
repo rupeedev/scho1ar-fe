@@ -106,7 +106,7 @@ export default function SubscriptionSuccess() {
             </div>
             
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Welcome to CostPie!
+              Welcome to Scho1ar Solution!
             </h1>
             
             <p className="text-xl text-gray-600 mb-6">
@@ -175,7 +175,7 @@ export default function SubscriptionSuccess() {
             <CardHeader>
               <CardTitle>What's Next?</CardTitle>
               <CardDescription>
-                Get the most out of your CostPie subscription
+                Get the most out of your Scho1ar Solution subscription
               </CardDescription>
             </CardHeader>
             <CardContent>

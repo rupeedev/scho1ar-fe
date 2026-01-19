@@ -57,7 +57,7 @@ const LandingPage = () => {
       name: "Sarah Chen",
       role: "CTO at TechFlow",
       company: "TechFlow Solutions",
-      content: "CostPie helped us reduce our AWS bill by 35% in the first month. The insights are incredible!",
+      content: "Scho1ar Solution helped us reduce our AWS bill by 35% in the first month. The insights are incredible!",
       rating: 5
     },
     {
@@ -134,14 +134,14 @@ const LandingPage = () => {
                 <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                   <DollarSign className="h-5 w-5 text-white" />
                 </div>
-                <span className="ml-2 text-xl font-bold text-gray-900">CostPie</span>
+                <span className="ml-2 text-xl font-bold text-gray-900">Scho1ar Solution</span>
               </div>
             </div>
             
             <nav className="hidden md:flex space-x-8">
-              <a href="#features" className="text-gray-600 hover:text-gray-900">Features</a>
+              <a href="/" className="text-gray-600 hover:text-gray-900 font-medium">A(I)nfra</a>
+              <a href="https://app.scho1ar.com/about" className="text-gray-600 hover:text-gray-900 font-medium">iKanban</a>
               <Link to="/pricing" className="text-gray-600 hover:text-gray-900">Pricing</Link>
-              <a href="#testimonials" className="text-gray-600 hover:text-gray-900">Reviews</a>
               <a href="#contact" className="text-gray-600 hover:text-gray-900">Contact</a>
             </nav>
             
@@ -171,7 +171,7 @@ const LandingPage = () => {
             </h1>
             
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              CostPie's AI-powered platform automatically optimizes your cloud infrastructure, 
+              Scho1ar Solution's AI-powered platform automatically optimizes your cloud infrastructure, 
               eliminates waste, and provides actionable insights to reduce your monthly bills.
             </p>
             
@@ -264,7 +264,7 @@ const LandingPage = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl font-bold text-white mb-6">
-                Why Choose CostPie for Cloud Optimization?
+                Why Choose Scho1ar Solution for Cloud Optimization?
               </h2>
               <p className="text-blue-100 text-lg mb-8">
                 Join hundreds of companies who have already transformed their cloud spending with our intelligent platform.
@@ -296,7 +296,7 @@ const LandingPage = () => {
                   <span className="text-2xl font-bold text-red-600">$12,450</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">After CostPie Optimization</span>
+                  <span className="text-gray-600">After Scho1ar Solution Optimization</span>
                   <span className="text-2xl font-bold text-green-600">$7,470</span>
                 </div>
                 <hr />
@@ -409,7 +409,7 @@ const LandingPage = () => {
             Ready to Start Saving on Cloud Costs?
           </h2>
           <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Join thousands of companies already optimizing their cloud infrastructure with CostPie.
+            Join thousands of companies already optimizing their cloud infrastructure with Scho1ar Solution.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -439,7 +439,7 @@ const LandingPage = () => {
                 <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                   <DollarSign className="h-5 w-5 text-white" />
                 </div>
-                <span className="ml-2 text-xl font-bold text-gray-900">CostPie</span>
+                <span className="ml-2 text-xl font-bold text-gray-900">Scho1ar Solution</span>
               </div>
               <p className="text-gray-600 mb-4">
                 The smart way to optimize your cloud costs and maximize your infrastructure ROI.
@@ -478,7 +478,7 @@ const LandingPage = () => {
           </div>
           
           <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-600">
-            <p>&copy; 2025 CostPie Inc. All rights reserved.</p>
+            <p>&copy; 2025 Scho1ar Solution Inc. All rights reserved.</p>
           </div>
         </div>
       </footer>

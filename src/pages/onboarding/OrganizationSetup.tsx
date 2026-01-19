@@ -192,7 +192,7 @@ const OrganizationSetup = () => {
       currentStep={1}
       totalSteps={1}
       title={isEditing ? "Edit Your Organization" : "Set Up Your Organization"}
-      description={isEditing ? "Update your organization details." : "Tell us about your organization to customize your CostPie experience."}
+      description={isEditing ? "Update your organization details." : "Tell us about your organization to customize your Scho1ar Solution experience."}
     >
       <Card>
         <CardContent className="p-8">

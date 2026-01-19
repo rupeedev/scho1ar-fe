@@ -18,7 +18,7 @@ const SubscriptionSetup = () => {
       name: 'Free Trial',
       price: '$0',
       period: '/14 days',
-      description: 'Perfect for trying out CostPie',
+      description: 'Perfect for trying out Scho1ar Solution',
       features: [
         'Up to 3 cloud accounts',
         'Basic cost analytics',

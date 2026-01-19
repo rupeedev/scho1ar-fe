@@ -1,5 +1,5 @@
 /**
- * Comprehensive error handling utilities for CostPie application
+ * Comprehensive error handling utilities for Scho1ar Solution application
  */
 
 // Define specific error types for better handling
