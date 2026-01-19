@@ -6,9 +6,13 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  RAILWAY_PROJECT_ID: f64ea4b0-515c-4d20-b464-668c75d03541
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: production
 
     steps:
       - name: Checkout code
@@ -34,6 +38,6 @@ jobs:
         run: npm install -g @railway/cli
 
       - name: Deploy to Railway
-        run: railway up --service ${{ vars.RAILWAY_SERVICE_NAME }}
+        run: railway up --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
