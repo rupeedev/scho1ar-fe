@@ -71,8 +71,8 @@ const LandingPage = () => {
             </div>
 
             <nav className="hidden md:flex items-center gap-8">
-              <a href="https://aiinfra.cloud" className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors">A(I)infra</a>
-              <a href="https://ikanban.cloud" className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors">iKanban</a>
+              <a href="https://www.scho1ar.com/" className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors">A(I)infra</a>
+              <a href="https://app.scho1ar.com/about" className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors">iKanban</a>
               <Link to="/pricing" className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors">Pricing</Link>
               <a href="#contact" className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors">Contact</a>
             </nav>
